@@ -1,4 +1,5 @@
 import java.io._
+import java.awt.Color
 import breeze.linalg._
 import breeze.plot._
 
@@ -15,15 +16,40 @@ object hello {
     val testData = getDataFromCSV(new File(basePath)) 
     
     val data = for (i <- 1 to 5) yield (i,i)
-    val points = for(i <- 0 until testData._1.length) yield (testData._1(i)(0), testData._1(i)(1))
+    
+    val pointsX1 = new Array[Double](testData._1.length)
+    for(i <- 0 until testData._1.length) {
+      if(testData._2(i) == 1) {
+        pointsX1(i) = testData._1(i)(0)
+      }
+    }
+    
+    val pointsY1 = new Array[Double](testData._1.length)
+    for(i <- 0 until testData._1.length) {
+      if(testData._2(i) == 1) {
+        pointsY1(i) = testData._1(i)(1)
+      }
+    }
     
     
+    val pointsX0 = new Array[Double](testData._1.length)
+    for(i <- 0 until testData._1.length) {
+      if(testData._2(i) == 0) {
+        pointsX0(i) = testData._1(i)(0)
+      }
+    }
+    
+    val pointsY0 = new Array[Double](testData._1.length)
+    for(i <- 0 until testData._1.length) {
+      if(testData._2(i) == 0) {
+        pointsY0(i) = testData._1(i)(1)
+      }
+    }
 
     val f = Figure()
     val p = f.subplot(0)
-    val x = linspace(0.0,1.0)
-    p += plot(x, x :^ 2.0)
-    p += plot(x, x :^ 3.0, '.')
+    p += plot(pointsX1, pointsY1, '.', "red")
+    p += plot(pointsX0, pointsY0, '.', "blue")
     p.xlabel = "x axis"
     p.ylabel = "y axis"
     f.saveas("lines.png")
